@@ -1,9 +1,7 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FileText, Database, Cog, Zap } from 'lucide-react';
-import Image from 'next/image';
 
 const PackageStructure = () => (
   <Card>

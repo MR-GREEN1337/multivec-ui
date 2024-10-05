@@ -11,7 +11,7 @@ const MissionStatement = () => (
     </CardHeader>
     <CardContent>
       <p className="text-lg">
-        At MultiVec, we're on a mission to revolutionize multimodal data augmentation for large language models. We believe in empowering developers and researchers with tools that seamlessly integrate various data types, enhancing the capabilities of AI systems across diverse applications.
+        At MultiVec, we&aposre on a mission to revolutionize multimodal data augmentation for large language models. We believe in empowering developers and researchers with tools that seamlessly integrate various data types, enhancing the capabilities of AI systems across diverse applications.
       </p>
     </CardContent>
   </Card>
@@ -33,7 +33,7 @@ const ProjectOverview = () => (
         <li>Utilities for standardizing data formats across different platforms</li>
       </ul>
       <p className="mt-4">
-        Whether you're a researcher pushing the boundaries of AI or a developer building the next generation of intelligent applications, MultiVec provides the tools you need to harness the full potential of multimodal data.
+        Whether you&aposre a researcher pushing the boundaries of AI or a developer building the next generation of intelligent applications, MultiVec provides the tools you need to harness the full potential of multimodal data.
       </p>
     </CardContent>
   </Card>
