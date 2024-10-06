@@ -17,6 +17,7 @@ const Hero = () => (
     <p className="text-xl text-white mb-8">
       Empower your LLMs with advanced multimodal capabilities
     </p>
+    <a href="/docs">
     <Button
       size="lg"
       className="transition-transform duration-200 hover:scale-105"
@@ -24,6 +25,7 @@ const Hero = () => (
       Explore MultiVec
       <Zap className="ml-2" />
     </Button>
+    </a>
   </div>
 );
 
