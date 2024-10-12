@@ -1,7 +1,9 @@
-import React from 'react';
+"use client"
+
+import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileText, Database, Cog, Zap } from 'lucide-react';
+import { FileText, Database, Cog, Zap, BarChart3, PlusCircle } from 'lucide-react';
 
 const PackageStructure = () => (
   <Card>
@@ -65,93 +67,178 @@ const UsageExample = () => (
       <CardTitle>Basic Usage</CardTitle>
     </CardHeader>
     <CardContent>
-      <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto">
+      <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto text-sm">
         {`
 import multivec
 
-# Load data
-data = multivec.data.load.pdf.load_pdf("example.pdf")
+# Load and process PDF data
+pdf_loader = multivec.data.load.PDFLoader("example.pdf")
+text_docs, image_docs = pdf_loader.process()
 
-# Process data
-processed_data = multivec.data.process.pdf.process_pdf(data)
+# Process HTML data
+html_loader = multivec.data.load.HTMLLoader("http://example.com")
+html_docs = html_loader.process()
 
-# Generate using a provider
-provider = multivec.providers.openai.OpenAIProvider(api_key="your-api-key")
-result = provider.generate(processed_data)
+# Load and process CSV data
+csv_loader = multivec.data.load.CSVLoader("data.csv")
+text_docs, image_docs = csv_loader.process()
+
+# Use a provider
+provider = multivec.providers.llm.openai.ChatOpenAI(api_key="your-api-key")
+result = provider.generate("Your prompt here")
+
+# Augment data
+augmented_docs = pdf_loader.process_with_augmentation(keywords=["important", "keywords"])
 
 print(result)
+print(augmented_docs)
         `}
       </pre>
     </CardContent>
   </Card>
 );
 
-const ModuleDescriptions = () => (
-  <Tabs defaultValue="data">
-    <TabsList className="grid w-full grid-cols-4">
-      <TabsTrigger value="data">Data</TabsTrigger>
-      <TabsTrigger value="generate">Generate</TabsTrigger>
-      <TabsTrigger value="providers">Providers</TabsTrigger>
-      <TabsTrigger value="utils">Utils</TabsTrigger>
-    </TabsList>
-    <TabsContent value="data">
-      <Card>
-        <CardHeader>
-          <CardTitle><FileText className="inline mr-2" />Data Module</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>The data module contains functions for loading and processing various file formats:</p>
-          <ul className="list-disc pl-5 mt-2">
-            <li>CSV: Load and process CSV files</li>
-            <li>DOCX: Load and process Word documents</li>
-            <li>PDF: Load and process PDF files</li>
-          </ul>
-        </CardContent>
-      </Card>
-    </TabsContent>
-    <TabsContent value="generate">
-      <Card>
-        <CardHeader>
-          <CardTitle><Zap className="inline mr-2" />Generate Module</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>The generate module provides functionality for generating content based on processed data. It interfaces with various LLM providers to produce augmented multimodal content.</p>
-        </CardContent>
-      </Card>
-    </TabsContent>
-    <TabsContent value="providers">
-      <Card>
-        <CardHeader>
-          <CardTitle><Database className="inline mr-2" />Providers Module</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>The providers module contains integrations with various LLM and vector database providers:</p>
-          <ul className="list-disc pl-5 mt-2">
-            <li>OpenAI</li>
-            <li>Anthropic</li>
-            <li>Bedrock</li>
-            <li>Groq</li>
-            <li>Ollama</li>
-            <li>Pinecone</li>
-            <li>Qdrant</li>
-          </ul>
-        </CardContent>
-      </Card>
-    </TabsContent>
-    <TabsContent value="utils">
-      <Card>
-        <CardHeader>
-          <CardTitle><Cog className="inline mr-2" />Utils Module</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>The utils module provides utility functions and classes used across the package, including base formatting functions for standardizing data across different formats and providers.</p>
-        </CardContent>
-      </Card>
-    </TabsContent>
-  </Tabs>
+const ModuleDescriptions = () => {
+  const [activeTab, setActiveTab] = useState('data');
+  
+  const modules = {
+    data: {
+      icon: <FileText className="inline mr-2" />,
+      title: "Data Module",
+      content: "The data module contains functions for loading, processing, and augmenting various file formats:",
+      items: [
+        "PDF: Load and process PDF files, extract text and images",
+        "HTML: Load and process HTML files or web pages",
+        "CSV: Load and process CSV or Excel files, create visualizations",
+        "Data Augmentation: Enhance extracted data with additional information or highlighting"
+      ]
+    },
+    providers: {
+      icon: <Database className="inline mr-2" />,
+      title: "Providers Module",
+      content: "The providers module contains integrations with various services:",
+      items: [
+        "LLM: OpenAI, Anthropic, Bedrock, Groq, Ollama",
+        "Vector DB: Pinecone, Qdrant",
+        "Cloud: AWS, Azure",
+        "Embedding: Various embedding providers"
+      ]
+    },
+    tools: {
+      icon: <Cog className="inline mr-2" />,
+      title: "Tools Module",
+      content: "The tools module provides additional functionality:",
+      items: [
+        "CrewAI integration",
+        "LangChain integration",
+        "Base formatting utilities"
+      ]
+    },
+    utils: {
+      icon: <Zap className="inline mr-2" />,
+      title: "Utils Module",
+      content: "The utils module provides utility functions and classes used across the package:",
+      items: [
+        "Base formatting functions",
+        "Helper utilities for data processing and manipulation"
+      ]
+    },
+    eval: {
+      icon: <BarChart3 className="inline mr-2" />,
+      title: "Eval Module",
+      content: "The eval module provides tools for evaluating model performance:",
+      items: [
+        "Metrics calculation",
+        "Performance analysis utilities"
+      ]
+    },
+    augmentation: {
+      icon: <PlusCircle className="inline mr-2" />,
+      title: "Data Augmentation",
+      content: "MultiVec provides powerful data augmentation capabilities:",
+      items: [
+        "Keyword highlighting in images and text",
+        "Automatic keyword extraction using LLMs",
+        "Enhanced visualization of data points",
+        "Integration with LLMs for content enrichment"
+      ]
+    }
+  };
+
+  return (
+    <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <TabsList className="grid w-full grid-cols-6">
+        {Object.keys(modules).map(key => (
+          <TabsTrigger key={key} value={key}>{modules[key].title}</TabsTrigger>
+        ))}
+      </TabsList>
+      {Object.entries(modules).map(([key, module]) => (
+        <TabsContent key={key} value={key}>
+          <Card>
+            <CardHeader>
+              <CardTitle>{module.icon} {module.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>{module.content}</p>
+              <ul className="list-disc pl-5 mt-2">
+                {module.items.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      ))}
+    </Tabs>
+  );
+};
+
+const AugmentationExample = () => (
+  <Card>
+    <CardHeader>
+      <CardTitle>Data Augmentation Example</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto text-sm">
+        {`
+import multivec
+from multivec.providers.llm.openai import ChatOpenAI
+
+# Initialize LLM provider for keyword extraction
+llm = ChatOpenAI(api_key="your-openai-api-key")
+
+# Load and process PDF with augmentation
+pdf_loader = multivec.data.load.PDFLoader("example.pdf", llm=llm)
+augmented_docs = pdf_loader.process_with_augmentation()
+
+# The augmented_docs now contain:
+# - Extracted text with highlighted keywords
+# - Images with important information highlighted
+# - Additional metadata and annotations
+
+# Process HTML with augmentation
+html_loader = multivec.data.load.HTMLLoader("http://example.com", llm=llm)
+augmented_html_docs = html_loader.process()
+
+# The augmented_html_docs include:
+# - Extracted text with highlighted keywords
+# - Screenshots with important elements highlighted
+# - Enhanced metadata based on page content
+
+# Load and process CSV with augmentation
+csv_loader = multivec.data.load.CSVLoader("data.csv")
+augmented_text_docs, augmented_image_docs = csv_loader.process()
+
+# The augmented CSV data includes:
+# - Visualization of data with important points highlighted
+# - Enhanced metadata and statistical summaries
+        `}
+      </pre>
+    </CardContent>
+  </Card>
 );
 
-const DocsPage = () => {
+const MultiVecDocs = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <main className="container mx-auto py-10 px-4">
@@ -161,10 +248,11 @@ const DocsPage = () => {
           <InstallationGuide />
           <UsageExample />
           <ModuleDescriptions />
+          <AugmentationExample />
         </div>
       </main>
     </div>
   );
 };
 
-export default DocsPage;
+export default MultiVecDocs;
