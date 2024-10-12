@@ -101,7 +101,16 @@ print(augmented_docs)
 const ModuleDescriptions = () => {
   const [activeTab, setActiveTab] = useState('data');
   
-  const modules = {
+  interface ModuleInterface {
+    [key: string]: {
+      icon: React.ReactNode;
+      title: string;
+      content: string;
+      items: string[];
+    };
+  }
+
+  const modules: ModuleInterface = {
     data: {
       icon: <FileText className="inline mr-2" />,
       title: "Data Module",
